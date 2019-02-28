@@ -6,6 +6,8 @@ import { ThyContentComponent } from './content.component';
 import { ThySidebarComponent } from './sidebar.component';
 import { ThyContentSectionComponent } from './content-section.component';
 import { ThyContentMainComponent } from './content-main.component';
+import { ThyButtonModule } from '../button/button.module';
+import { ThyInputModule } from '../input/module';
 
 @NgModule({
     declarations: [
@@ -17,7 +19,9 @@ import { ThyContentMainComponent } from './content-main.component';
         ThyContentMainComponent
     ],
     imports: [
-        CommonModule
+        CommonModule,
+        ThyButtonModule,
+        ThyInputModule
     ],
     exports: [
         ThyLayoutComponent,
