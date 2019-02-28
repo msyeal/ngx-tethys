@@ -1,0 +1,24 @@
+<div class="sidebar-header">
+    <ng-container *ngIf="isTemplateRef">
+        <template [ngTemplateOutlet]="headerTemplate"></template>
+    </ng-container>
+
+    <ng-container *ngIf="!isTemplateRef">
+        <span class="sidebar-title">
+            {{thyTitle}}
+        </span>
+        <div class="sidebar-more">
+            <button (click)="addModel($event)" thyButtonIcon="wtf wtf-project-add-o" thyLight="true" thySize="lg"></button>
+        </div>
+    </ng-container>
+</div>
+<div class="sidebar-content">
+    <div class="sidebar-search-area">
+        <thy-input-search name="search" (keydown.enter)="search($event)" [thySearchFocus]="false" thyTheme="ellipse"
+            placeholder="{{thyPlaceHolder}}">
+        </thy-input-search>
+    </div>
+    <div class="sidebar-content-list">
+        <ng-template [ngTemplateOutlet]="sidebarContentTemplateRef"></ng-template>
+    </div>
+</div>
