@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgxTethysModule } from '../../../src/index';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NgxTethysModule } from '../../../src/public-api';
 import { RouterModule } from '@angular/router';
 import { SortablejsModule } from 'angular-sortablejs';
 
@@ -14,7 +16,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ThyTranslate } from '../../../src/shared';
 import { DemoThyTranslate, thyValidatorConfigProvider } from './config';
 import { FormsModule } from '@angular/forms';
-import { ThyAvatarService } from '../../../src';
+import { ThyAvatarService } from '../../../src/public-api';
 import { CustomAvatarService } from './components/+avatar/custom-avatar.service';
 import { CustomEditorService } from './components/+editor/custom-editor.service';
 import { ThyMarkdownParserService } from '../../../src/directive';
@@ -23,16 +25,16 @@ import { HighlightModule } from 'ngx-highlightjs';
 import xml from 'highlight.js/lib/languages/xml';
 import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
+import { ThyStoreModule } from '../../../src/store/module';
+import { DriveStore } from './store/drive-store';
+import { TasksStore } from './store/tasks-store';
+import { DESIGN_COMPONENTS } from './design';
 export function hljsLanguages() {
-    return [
-        { name: 'typescript', func: typescript },
-        { name: 'scss', func: scss },
-        { name: 'xml', func: xml }
-    ];
+    return [{ name: 'typescript', func: typescript }, { name: 'scss', func: scss }, { name: 'xml', func: xml }];
 }
 
 @NgModule({
-    declarations: [AppComponent, ...COMPONENTS, ...DOCS_COMPONENTS],
+    declarations: [AppComponent, ...COMPONENTS, ...DOCS_COMPONENTS, ...DESIGN_COMPONENTS],
     entryComponents: [...ENTRY_COMPONENTS],
     imports: [
         BrowserModule,
@@ -42,13 +44,16 @@ export function hljsLanguages() {
             useHash: true
         }),
         ModalModule.forRoot(),
+        DragDropModule,
         TranslateModule.forRoot(),
         TabsModule.forRoot(),
         TranslateModule,
         SortablejsModule.forRoot({}),
         HighlightModule.forRoot({
             languages: hljsLanguages
-        })
+        }),
+        ThyStoreModule.forFeature([TasksStore, DriveStore]),
+        TextFieldModule
     ],
     providers: [
         {

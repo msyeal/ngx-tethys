@@ -1,8 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { ThyTreeNode } from '../../../../../src/tree/tree.class';
 import { ThyTreeComponent } from '../../../../../src/tree/tree.component';
 import apiParameters from './api-parameters.json';
+import { ThyDialog } from '../../../../../src/dialog';
 @Component({
     selector: 'demo-tree-section',
     templateUrl: './tree-section.component.html',
@@ -34,24 +35,24 @@ export class DemoTreeSectionComponent {
     public treeNodes: any[] = [
         {
             key: '01',
-            title: 'root1',
+            title: '北京',
             icon: 'wtf wtf-drive-o',
             origin: { type: 1 },
             iconStyle: { color: 'red' },
             children: [
                 {
                     key: '01001',
-                    title: 'child1',
+                    title: '海淀',
                     icon: 'wtf wtf-file-text',
                     children: [
                         {
-                            key: '01001001',
-                            title: 'child1',
+                            key: '西二旗',
+                            title: '西二旗',
                             icon: 'wtf wtf-file-text'
                         },
                         {
-                            key: '010010002',
-                            title: 'child2',
+                            key: '西三旗',
+                            title: '西三旗',
                             icon: 'wtf wtf-file-text'
                         }
                     ]
@@ -75,7 +76,7 @@ export class DemoTreeSectionComponent {
 
     public apiParameters = apiParameters;
 
-    constructor() {}
+    constructor(public thyDialog: ThyDialog) {}
 
     public addNode() {
         console.log(this.treeComponent.getSelectedNode());
@@ -84,7 +85,7 @@ export class DemoTreeSectionComponent {
             key: '020011',
             title: 'new',
             edited: true
-        });
+        },this.treeComponent.getSelectedNode());
     }
 
     public deleteNode(node) {
@@ -119,5 +120,24 @@ export class DemoTreeSectionComponent {
 
     public draggableNode(event) {
         console.log(event);
+    }
+
+    openDialogTree(template: TemplateRef<any>) {
+        this.thyDialog.open(template);
+    }
+
+    public dialogLoadTreeNodes(event: { node: ThyTreeNode }) {
+        event.node.addChildren([
+            {
+                key: '08001001',
+                title: '11111111111111',
+                icon: 'wtf wtf-file-text'
+            },
+            {
+                key: '080010002',
+                title: '2222222222222222',
+                icon: 'wtf wtf-file-text'
+            }
+        ]);
     }
 }

@@ -1,14 +1,13 @@
 import { Component, OnDestroy, TemplateRef } from '@angular/core';
-import {
-    ThyDialog,
-    ThyDialogConfig,
-    ThyDialogSizes
-} from '../../../../../src/dialog';
+import { ThyDialog, ThyDialogConfig, ThyDialogSizes } from '../../../../../src/dialog';
 import { helpers } from '../../../../../src/util';
 import { DemoDialogContentComponent } from './dialog-content.component';
 import { Subject, of, defer } from 'rxjs';
-import { takeUntil, delay } from 'rxjs/operators';
+import { takeUntil, delay, map } from 'rxjs/operators';
 import { apiParameters } from './api-parameters';
+import { taskTypes } from '../+select/mock-data';
+import { DemoTreeSectionComponent } from '../+tree/tree-section.component';
+
 
 const exampleCode = `
 import { DialogContentComponent } from './dialog-content.component';
@@ -53,6 +52,10 @@ export class DemoDialogSectionComponent implements OnDestroy {
 
     public apiParameters = apiParameters;
 
+    optionData = [];
+
+    selectedItem = this.optionData[0];
+
     public thyPrimaryAction = (event: Event) => {
         return of(true).pipe(delay(1000));
     };
@@ -64,10 +67,13 @@ export class DemoDialogSectionComponent implements OnDestroy {
             .subscribe(dialog => {
                 console.log(dialog);
             });
+        this.optionData = taskTypes;
     }
 
     openTemplateDialog(template: TemplateRef<any>) {
-        this.thyDialog.open(template);
+        this.thyDialog.open(template, {
+            panelClass: 'selectDialogCustomer'
+        });
     }
 
     openComponentDialog() {
@@ -88,6 +94,25 @@ export class DemoDialogSectionComponent implements OnDestroy {
         dialogRef.afterClosed().subscribe(result => {
             console.log(`Dialog afterClosed result: ${result}`);
         });
+    }
+
+    openConfirm() {
+        this.thyDialog.confirm({
+            title: '确认删除',
+            content: '确认要删除这条任务<code>21111</code>吗？</script>',
+            onOk: () => {
+                return of([1]).pipe(
+                    delay(2000),
+                    map(() => {
+                        return false;
+                    })
+                );
+            }
+        });
+    }
+
+    openTreeDemo() {
+        this.thyDialog.open(DemoTreeSectionComponent);
     }
 
     ngOnDestroy(): void {

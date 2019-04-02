@@ -32,6 +32,7 @@
     ],
     "files": [
         "../scripts/typings.d.ts",
+        "./public-api.ts",
         "./index.ts"
     ],
     "angularCompilerOptions": {

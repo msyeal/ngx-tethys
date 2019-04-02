@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ThyPopBoxService } from '../../../../../src/pop-box';
+import { DemoMenuPopComponent } from './pop-menu.component';
 
 @Component({
     selector: 'demo-menu-section',
@@ -50,8 +52,8 @@ export class DemoMenuSectionComponent implements OnInit {
             default: ''
         },
         {
-            property: 'thyActionClick',
-            description: '点击右侧事件, 如果设置了菜单，显示菜单优先',
+            property: 'thyOnActionClick',
+            description: '点击操作图标事件, 如果设置了菜单，显示菜单优先',
             type: 'Event',
             default: ''
         }
@@ -66,18 +68,35 @@ export class DemoMenuSectionComponent implements OnInit {
         }
     ];
 
-    public apiThyMenuItemIconMoreParameters = [
+    public apiThyMenuItemActionParameters = [
         {
             property: 'thyActionMenu',
             description: '点击右侧图标弹出菜单',
-            type: 'TemplateRef',
+            type: 'TemplateRef | ComponentType<T>',
             default: ''
+        },
+        {
+            property: 'thyStopPropagation',
+            description: '是否阻止冒泡',
+            type: 'boolean',
+            default: 'true'
         }
     ];
+
+    constructor(private pbox: ThyPopBoxService) {}
 
     ngOnInit() {}
 
     moreAction() {
         console.log('click');
+    }
+
+    popMenu(event: Event) {
+        this.pbox.show(DemoMenuPopComponent,{
+            target: event.currentTarget,
+            insideAutoClose: true,
+            stopPropagation: true,
+            placement: 'bottom right'
+        })
     }
 }
